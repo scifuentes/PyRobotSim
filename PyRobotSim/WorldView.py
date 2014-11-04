@@ -97,12 +97,21 @@ class WorldPainter(threading.Thread):
     def OnScreenText(self):
         glColor3f(0.0, 0.0, 0.0);
         
-        text=''
-        text+='boo: ({0:.2f},{1:.2f})@{2:.2f}\n'.format(1.,2.,3.)
+        text='boo'
         
-        glRasterPos2f(300.0, -300);
-        glutBitmapString(GLUT_BITMAP_HELVETICA_12,text )
+        #glRasterPos2f(300.0, -300);
+        #glutBitmapString(GLUT_BITMAP_HELVETICA_12,text )
         
     def GetWorldLimits(self):
-        
-        return [200,-200,200,-200]    
+        x_min=sys.float_info.max
+        y_min=sys.float_info.max
+        x_max=sys.float_info.min
+        y_max=sys.float_info.min
+        for wall in self.world.wallsObjects:
+            ws=wall.WorldBox()
+            x_min=min([x_min,wall.position.x+ws[0]])
+            y_min=min([y_min,wall.position.y+ws[1]])
+            x_max=max([x_max,wall.position.x+ws[2]])
+            y_max=max([y_max,wall.position.y+ws[3]])
+            
+        return [x_max,x_min,y_max,y_min]    

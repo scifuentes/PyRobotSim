@@ -14,17 +14,19 @@ import sys
 import os
 import importlib
 
-def Run(world):
+def Run(world,controlers):
     from SimWorld import WorldSimulation
     from WorldView import WorldPainter    
-    #import RobotLogic
     
     sim=WorldSimulation(world)
     paint=WorldPainter(world)
 
     sim.start()
     paint.start()
-    #RobotLogic.main()
+
+    for control in controlers:
+        control.start()
+        
     try:
         paint.join()
         sim.join()
@@ -47,12 +49,12 @@ if __name__ == "__main__":
     #import provided scenario
     scenario_path = os.path.dirname(sys.argv[1])
     scenario_file = os.path.basename(sys.argv[1])
+    if scenario_file.endswith('.py'):
+        scenario_file=scenario_file[:-3]
+    
     sys.path.insert(1,scenario_path)
-    ScenarioLib=importlib.import_module(scenario_file)
+    s=importlib.import_module(scenario_file)
 
-    world=ScenarioLib.world
-    Run(world)
-    
-
-    
+    Run(s.world,s.controlers)
+     
     
