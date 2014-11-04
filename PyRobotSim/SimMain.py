@@ -10,22 +10,25 @@
 
 import time
 import thread
-
-
-from SimWorld import WorldSimulation
-from WorldView import WorldPainter
+import sys
+import os
+import importlib
 
 def Run(world):
+    from SimWorld import WorldSimulation
+    from WorldView import WorldPainter    
+    #import RobotLogic
+    
     sim=WorldSimulation(world)
     paint=WorldPainter(world)
-    
-    #sim.run()
-    
+
     sim.start()
     paint.start()
+    #RobotLogic.main()
     try:
         paint.join()
         sim.join()
+    
     except Exception,e:
         print 'uops: Run'
         print str(e)
@@ -36,20 +39,20 @@ def Run(world):
 #==========================================    
 
 if __name__ == "__main__":
-    import sys
-    import os
-    import importlib
-    
+   
     currDir=os.path.dirname(os.path.realpath(__file__))
     sys.path.insert(1,currDir)
     sys.path.insert(1,'PartsBox')
 
     #import provided scenario
-    path_part = os.path.dirname(sys.argv[1])
-    name_part = os.path.basename(sys.argv[1])
-    sys.path.insert(1,path_part)
-    ScenarioLib=importlib.import_module(name_part)
+    scenario_path = os.path.dirname(sys.argv[1])
+    scenario_file = os.path.basename(sys.argv[1])
+    sys.path.insert(1,scenario_path)
+    ScenarioLib=importlib.import_module(scenario_file)
 
     world=ScenarioLib.world
-    
     Run(world)
+    
+
+    
+    

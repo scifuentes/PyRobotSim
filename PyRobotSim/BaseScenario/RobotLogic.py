@@ -1,7 +1,14 @@
-import SimpleUDP
+import os
+import sys
 import time
 from math import radians, degrees, pi
+
+currDir=os.path.dirname(os.path.realpath(__file__))
+parentDir=os.path.dirname(currDir)
+sys.path.insert(1,parentDir+r'\PartsBox')
+    
 from MathAux import AngleDif
+import SimpleUDP
 
 com=SimpleUDP.Client('127.0.0.1',1005)
 def main():
