@@ -1,9 +1,9 @@
 #=============================================================================================
 #
-#Robot simulator - Main Executor
-#  - imports the scenario file
-#  - launches the simulation thread
-#  - launches the visualization thread
+#PyRobotSim - Main Executor
+#               - imports the scenario file
+#               - launches the simulation thread
+#               - launches the visualization thread
 #
 #=============================================================================================
 #by Santiago Cifuentes

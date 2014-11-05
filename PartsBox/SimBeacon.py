@@ -1,6 +1,6 @@
 #=============================================================================================
 #
-#Robot simulator - Part : Beacon Transmitter & Receiver
+#PyRobotSim - Part : Beacon Transmitter & Receiver
 #
 #=============================================================================================
 #by Santiago Cifuentes

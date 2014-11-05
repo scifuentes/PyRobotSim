@@ -1,6 +1,6 @@
 #=============================================================================================
 #
-#Robot simulator - Basic Scenario definition
+#PyRobotSim  - Basic Scenario definition
 #                  - instantiates the world object and attaches all the simulated elements to the world object
 #                  - instantiate all the controllers and add them to the controllers list
 #

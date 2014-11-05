@@ -1,8 +1,8 @@
 #=============================================================================================
 #
-#Robot simulator - Main World Simulation 
+#PyRobotSim - Main World Simulation 'Engine'
 #                  - Main world simulation methods 
-#                  - Definition of simulated objects & their common methods
+#                  - Definition of world, simulated objects & their common methods
 #
 #=============================================================================================
 # by Santiago Cifuentes
@@ -311,24 +311,21 @@ class ActiveObject(WorldObject):
         self.collision=False
         
     def _UpdateAllPositions(self,t,dt) :
+        def CleanWorldReferences(obj):
+            if hasattr(obj,'_wshape'):
+                del obj._wshape
+            if hasattr(obj,'_box'):
+                del obj._box
+            if hasattr(obj,'_wpos'):
+                del obj._wpos   
+                
         self.UpdatePositions(t,dt)
         for child in self.childObjects:
             if isinstance(child,ActiveObject):
                 child._UpdateAllPositions(t,dt)
             else :
-                if hasattr(child,'_wshape'):
-                    del child._wshape
-                if hasattr(child,'_box'):
-                    del child._box
-                if hasattr(child,'_wpos'):
-                    del child._wpos
-                    
-        if hasattr(self,'_wshape'):
-            del self._wshape
-        if hasattr(self,'_box'):
-            del self._box
-        if hasattr(self,'_wpos'):
-            del self._wpos
+                CleanWorldReferences(child)
+        CleanWorldReferences(self)
         
     def _UpdateAllSensors(self,t,dt,world) :
         self.UpdateSensors(t,dt,world)

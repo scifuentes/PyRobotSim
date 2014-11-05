@@ -1,6 +1,6 @@
 #=============================================================================================
 #
-#Robot simulator - Simulated Robot HW definition and low level commands simulated actions
+#PyRobotSim  - Simulated Robot HW definition and low level commands simulated actions
 #                  Receives the control commands through a UDP link
 #
 #============================================================================================
@@ -22,9 +22,10 @@ class SimRobot(DiferentialChassisRobot):
         
         #lets build the robot#
         
+        #this defines the robot body, it will be used for collision detection and interaction with sensors
         l=25.
         w=20.
-        self.shape=[[l/2,-w/2],[l/2,w/2],[-l/2,w/2],[-l/2,-w/2]]
+        self.shape=[[l/2,-w/2],[l/2,w/2],[-l/2,w/2],[-l/2,-w/2]]    
         
         self.wheel_diameter=5.
         self.wheel_separation=20.

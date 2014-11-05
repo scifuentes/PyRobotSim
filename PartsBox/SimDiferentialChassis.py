@@ -1,7 +1,6 @@
 #=============================================================================================
 #
-#Robot simulator - Main Piece : Diferential Chassis
-#
+#PyRobotSim - Part : Diferential Chassis
 #
 #=============================================================================================
 #by Santiago Cifuentes

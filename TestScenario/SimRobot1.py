@@ -1,6 +1,6 @@
 #=============================================================================================
 #
-#Robot simulator - Simulated Robot HW definition and low level commands simulated actions
+#PyRobotSim  - Simulated Robot HW definition and low level commands simulated actions
 #                  Receives the control commands through a UDP link
 #
 #============================================================================================
@@ -55,7 +55,7 @@ class SimRobot(DiferentialChassisRobot):
         self.compass=Compass()
         self.AttachChild(self.compass)
         
-        self.beaconReceiver=BeaconReceiver(0)
+        self.beaconReceiver=BeaconReceiver()
         self.AttachChild(self.beaconReceiver)
         
     def AttendRequests(self):   #implements ActiveObject::AttendRequests

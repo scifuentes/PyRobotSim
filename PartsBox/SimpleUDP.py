@@ -1,6 +1,9 @@
-# Simple UDP based client server communication.
-# Intended mainly for local comunication inside the same PC or local LAN
-# by Santiago Cifuentes
+#=============================================================================================
+#
+#PyRobotSim - Simple UDP Server & Client
+#
+#=============================================================================================
+#by Santiago Cifuentes
 
 import socket
 import errno
@@ -12,7 +15,7 @@ class Client:
         self.udpsock=socket.socket( socket.AF_INET, socket.SOCK_DGRAM ) # Internet, UDP
             
     def Send(self,msgOut):
-        self.udpsock.sendto(msgOut,(self.ip,self.port))  #envio -como cadena-
+        self.udpsock.sendto(msgOut,(self.ip,self.port))  #send -as string, space separated-
         
     def Read(self):
         msgIn, addr = self.udpsock.recvfrom( 128 )
@@ -27,7 +30,7 @@ class Server:
         self.ip=ip
         self.port=port
         self.AttendMessage=ReceivedMessageCB 
-            #callback function for incomming messages
+            #callback function for incoming messages
             # signature: ReceivedMessage(self,msgIn,addr):
         
         self.udpsock=socket.socket( socket.AF_INET, socket.SOCK_DGRAM ) # Internet, UDP
@@ -35,7 +38,7 @@ class Server:
         self.udpsock.bind((self.ip,self.port))
         
     def CheckRequests(self,buffsize=128):
-        #check if there are incomming messages
+        #check if there are incoming messages
         # and attend them
         
         try:
@@ -45,7 +48,7 @@ class Server:
                 #attend the request
                 msgOut=self.AttendMessage(msgIn,addr)        
         
-                #something to answer?
+                #something to answer? -as string, space separated-
                 if msgOut!='':
                     self.udpsock.sendto(msgOut,addr)
         

@@ -1,16 +1,8 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Wed Nov 06 07:34:00 2013
-
-@author: Tagore
-"""
-
 #=============================================================================================
 #
-#Robot simulator - World Visualization
-#
-#Rendering of the Robot hardware and the world
-#  Build as a client of the HW simulation
+#PyRobotSim - World Visualization
+#               - Rendering of the Robot hardware and the world
+#               - Build as a client of the HW simulation
 #
 #=============================================================================================
 
@@ -40,7 +32,7 @@ class WorldPainter(threading.Thread):
         glutInit()
         glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH)
         glutInitWindowSize(640,480)
-        glutCreateWindow("Sim World")
+        glutCreateWindow("PyRobotSim")
         
         glClearColor(1.0,1.0,1.0,0.0)
         glMatrixMode(GL_PROJECTION)

@@ -33,21 +33,18 @@ class RobotLogic(threading.Thread):
         
             d_fr,d_fl,d_bc=self.GetDistanceSensors()
             o_z= self.GetOrientation()
-            print 'Status = ',d_fr,d_fl,o_z
+            print self.name+' Sensors: ',d_fr,d_fl,o_z
             
             if d_fr >=80 and d_fl >=80 :
                 self.SetSpeed(20,20)        
             elif d_fr >20 and d_fl >20 :
                 self.SetSpeed(5,5)
             else :
-                print 'Collision Risk, turning'
+                print self.name+'Collision Risk, turning'
                 self.SetSpeed(0,0)
                 r0=self.GetOrientation()
                 r1=AngleDif(0,r0+radians(120))
                 da=AngleDif(r0,r1)
-                    
-                print 'Orientation = ',r0,r1
-
                     
                 while abs(da)>radians(0.1):
                     if abs(da)>radians(10):
@@ -60,9 +57,8 @@ class RobotLogic(threading.Thread):
                         self.SetSpeed(ts,-ts)                
                     r0=self.GetOrientation()
                     da=AngleDif(r0,r1)
-                    print 'Orientation = ',r0,r1,da
 
-                print 'Turn Done',r0
+                print self.name+'Turn Done',r0
                 self.SetSpeed(0,0)
     
     def GetDistanceSensors(self):    
