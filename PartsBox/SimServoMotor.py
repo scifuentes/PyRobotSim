@@ -14,7 +14,7 @@ class ServoMotor(ActiveObject):
         
         self.pos=0.
         self.speed=0.
-        self.target=None
+        self.target=None    #target angle, for non-continuous rotation control
         self.zero=zero
         self.axis=axis
         

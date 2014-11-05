@@ -55,6 +55,6 @@ if __name__ == "__main__":
     sys.path.insert(1,scenario_path)
     s=importlib.import_module(scenario_file)
 
-    Run(s.world,s.controlers)
+    Run(s.world,s.controllers)
      
     

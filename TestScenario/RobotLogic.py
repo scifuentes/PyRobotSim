@@ -1,3 +1,11 @@
+#=============================================================================================
+#
+#Robot Logic - Defines the high level logic of the robot, 
+#              Controls the robot through commands send to a communication link
+#
+#============================================================================================
+# by Santiago Cifuentes
+
 import os
 import sys
 import time
@@ -35,7 +43,7 @@ class RobotLogic(threading.Thread):
                 print 'Collision Risk, turning'
                 self.SetSpeed(0,0)
                 r0=self.GetOrientation()
-                r1=AngleDif(0,r0+radians(180))
+                r1=AngleDif(0,r0+radians(120))
                 da=AngleDif(r0,r1)
                     
                 print 'Orientation = ',r0,r1

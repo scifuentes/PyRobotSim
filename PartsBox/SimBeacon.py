@@ -12,21 +12,29 @@ from MathAux import AngleDif
 class BeaconSource(WorldObject):
     def __init__(self,id=0):
         super(BeaconSource, self).__init__()
-        self.id=0
+        self.id=id
 
 class BeaconReceiver(ActiveObject):
-    def __init__(self,id=0):
+    def __init__(self):
         super(BeaconReceiver, self).__init__()
-        self.id=0
-        self.distance=-1
-        self.angle=-0
+        self.sensed=[]
         
     def UpdateSensors(self,t,dt,world):
-        self.distance=-1
-        for obj in world.simObjects: 
+        sL=[]
+        for obj in world.GetSimObjectsR(): 
             if isinstance(obj,BeaconSource):
-                if obj.id==self.id :
-                    spx,spy,srz=self.WorldPosition()
-                    bpx,bpy,brz=obj.WorldPosition()
-                    self.distance=sqrt((spx-bpx)**2+(spy-bpy)**2)
-                    self.angle=atan2(bpy-spy,bpx-spx)
+                spx,spy,srz=self.WorldPosition()
+                bpx,bpy,brz=obj.WorldPosition()
+                dx=bpx-spx
+                dy=bpy-spy
+                distance=sqrt(dx**2+dy**2)
+                angle=AngleDif(0,atan2(dy,dx)-srz)
+                sL.append([obj.id, distance, angle])
+        self.sensed=sL
+       
+    
+    def GetReading(self,id):
+        for s in self.sensed:
+            if s[0]==id :
+                return s[1],s[2]
+        return -1,0

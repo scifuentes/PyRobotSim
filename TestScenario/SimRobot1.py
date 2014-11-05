@@ -1,9 +1,11 @@
 #=============================================================================================
 #
-#Robot simulator - Robot HW definition and main simulated actions
+#Robot simulator - Simulated Robot HW definition and low level commands simulated actions
+#                  Receives the control commands through a UDP link
 #
 #============================================================================================
 # by Santiago Cifuentes
+
 import math
 
 import SimpleUDP

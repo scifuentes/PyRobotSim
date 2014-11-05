@@ -1,10 +1,3 @@
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Dic 09 2013
-
-@author: Tagore
-"""
-
 #=============================================================================================
 #
 #Robot simulator - Main World Simulation 
@@ -12,6 +5,7 @@ Created on Tue Dic 09 2013
 #                  - Definition of simulated objects & their common methods
 #
 #=============================================================================================
+# by Santiago Cifuentes
 
 import threading
 import time
@@ -48,18 +42,21 @@ class WorldSimulation(threading.Thread) :
             
     def Sim(self,T,dT):
 
+        #Update All Positions
         for obj in self.world.simObjects:
             if isinstance(obj,ActiveObject):
                 obj.pos0=copy.deepcopy(obj.position)
                 obj._UpdateAllPositions(T,dT)
-                
+        
+        #Handle collisions
         self.HandleCollisions()
             
-        
+        #Update All Sensors
         for obj in self.world.simObjects:
             if isinstance(obj,ActiveObject):
                 obj._UpdateAllSensors(T,dT,self.world)
         
+        #Attend requests
         for obj in self.world.simObjects:
             if isinstance(obj,ActiveObject):
                 obj._AttendAllRequests()
@@ -125,7 +122,7 @@ class WorldSimulation(threading.Thread) :
                 if sobj.coll :
                     sobj.position=copy.deepcopy(sobj.pos0)
                     if sobj.collision==False :
-                        print str(id(sobj))+': Collision!'
+                        print sobj.name+'('+str(id(sobj))+'): Collision!'
                     sobj.collision=True
                 else:
                     sobj.collision=False
@@ -145,12 +142,17 @@ class WorldDescription(object):
         self.simObjects.append(simObject)
     def AddWallsObject(self,wallsObject):
         self.wallsObjects.append(wallsObject)
+    def GetSimObjectsR(self):    
+        objL=self.simObjects[:]
+        for obj in self.simObjects:
+            objL+=obj.GetChildsR()
+        return objL
         
 #==========================================    
 
 class WallsObject(object):
     def __init__(self):
-        self.walls=[]
+        self.walls=[]   #collection of walls, each defined as:[x0,y0,x1,y1]
         self.position=Position()
         
     def Paint(self):
@@ -162,9 +164,10 @@ class WallsObject(object):
         glColor3f(0.0,0.0,0.0)
         
         glBegin(GL_LINES)
-        for v in self.walls :
-            glVertex2f(v[0],v[1])
-            glVertex2f(v[2],v[3])
+        for w in self.walls :
+            [x0,y0,x1,y1]=w
+            glVertex2f(x0,y0)
+            glVertex2f(x1,y1)
         glEnd()
 
 
@@ -175,10 +178,11 @@ class WallsObject(object):
             x_max=sys.float_info.min
             y_max=sys.float_info.min
             for w in self.walls:
-                x_min=min([x_min,self.position.x+w[0],self.position.x+w[2]])
-                y_min=min([y_min,self.position.y+w[1],self.position.y+w[3]])
-                x_max=max([x_max,self.position.x+w[0],self.position.x+w[2]])
-                y_max=max([y_max,self.position.y+w[1],self.position.y+w[3]])
+                [x0,y0,x1,y1]=w
+                x_min=min([x_min,self.position.x+x0,self.position.x+x1])
+                y_min=min([y_min,self.position.y+y0,self.position.y+y1])
+                x_max=max([x_max,self.position.x+x0,self.position.x+x1])
+                y_max=max([y_max,self.position.y+y0,self.position.y+y1])
            
             self._box=[x_min,y_min,x_max,y_max]
         return self._box
@@ -191,6 +195,7 @@ class WorldObject(object):
         self.childObjects=[]
         self.position=Position()
         self.shape=None
+        self.name=''
 
         
     def AttachChild(self,child):
@@ -211,6 +216,12 @@ class WorldObject(object):
             rChildL+=child.GetChildsR()
         rChildL+=self.childObjects
         return rChildL
+        
+    def GetParentR(self):
+        if parentObject==None :
+            return self
+        else:
+            return parentObject.GetParent()
             
 
     def _Paint(self):   #called from WorldView
@@ -243,7 +254,7 @@ class WorldObject(object):
             glEnd()
             
             
-    def WorldPosition(self,x=0.,y=0):
+    def WorldPosition(self,x=0.,y=0.):
         if not hasattr(self,'_wpos'):
             if self.parentObject != None :
                 [xp,yp,rzp]=self.parentObject.WorldPosition()
@@ -304,7 +315,14 @@ class ActiveObject(WorldObject):
         for child in self.childObjects:
             if isinstance(child,ActiveObject):
                 child._UpdateAllPositions(t,dt)
-
+            else :
+                if hasattr(child,'_wshape'):
+                    del child._wshape
+                if hasattr(child,'_box'):
+                    del child._box
+                if hasattr(child,'_wpos'):
+                    del child._wpos
+                    
         if hasattr(self,'_wshape'):
             del self._wshape
         if hasattr(self,'_box'):
@@ -333,12 +351,6 @@ class ActiveObject(WorldObject):
         
     def AttendRequests(self) :
         pass
-        
-
-    
-    #=== Object Aux Functions ====
-        
-
 
 #==========================================
         
