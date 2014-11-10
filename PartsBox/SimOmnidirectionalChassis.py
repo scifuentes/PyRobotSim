@@ -14,11 +14,11 @@ from OpenGL.GL import *
 class DummyMotor:
     pass
 
-class DiferentialChassisRobot(ActiveObject):
+class OmnidirectionalChassisRobot(ActiveObject):
     
     
     def __init__(self):
-        super(DiferentialChassisRobot, self).__init__()
+        super(OmnidirectionalChassisRobot, self).__init__()
         #lets build the chassis
         self.wheel_diameter=5.
         self.wheel_separation=10.
@@ -26,7 +26,7 @@ class DiferentialChassisRobot(ActiveObject):
         self.motors=DummyMotor()
         self.motors.speedX=0
         self.motors.speedY=0
-        self.motors.speerRZ=0
+        self.motors.speedRZ=0
         
 
     def UpdatePositions(self,t,dt):
@@ -38,10 +38,10 @@ class DiferentialChassisRobot(ActiveObject):
         [wrl_dx,wrl_dy]=MathAux.Rotate([rob_dx,rob_dy],self.position.rz)    
         self.position.x+=wrl_dx
         self.position.y+=wrl_dy
-        self.position.rz+=drz  
+        self.position.rz+=rob_drz  
         
 
     def Paint(self):
-        super(DiferentialChassisRobot,self).Paint()
+        super(OmnidirectionalChassisRobot,self).Paint()
 
 

@@ -50,16 +50,21 @@ class DistanceSensor(ActiveObject):
         
     def Paint(self):
         if self.contact==None:
+            glPushAttrib(GL_ENABLE_BIT)
             glColor3f(.5,.5,0.5)
+            glLineStipple(1, 0x1111) 
+            glEnable(GL_LINE_STIPPLE)
             glBegin(GL_LINES)
             glVertex2f(0.,0.)
             glVertex2f(self.range,0.)
             glEnd()
+            glPopAttrib();
         else:
             glColor3f(1.0,0.0,0.0)
             glBegin(GL_LINES)
             glVertex2f(0.,0.)
             glVertex2f(self.reading,0.)
             glEnd()
+            
         
         
