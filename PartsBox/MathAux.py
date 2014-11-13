@@ -49,12 +49,12 @@ def LinesIntersection(l0,l1):
     else:
         return [],[]
 
-
+def AngleNorm(a):
+    while a>math.pi :
+        a-=2*math.pi
+    while a<-math.pi :
+        a+=2*math.pi
+    return a
+    
 def AngleDif(a0,a1):
-    d=a1-a0
-    while d>math.pi :
-        d-=2*math.pi
-    while d<-math.pi :
-        d+=2*math.pi
-    return d
-
+    return AngleNorm(a1-a0)

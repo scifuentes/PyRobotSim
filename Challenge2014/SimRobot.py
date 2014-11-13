@@ -12,8 +12,8 @@ import SimpleUDP
 from SimDiferentialChassis import DiferentialChassisRobot
 from SimRangeSensor import DistanceSensor
 from SimServoMotor import ServoMotor
-from SimBeacon import BeaconReceiver
-from SimBeacon import BeaconSource
+from SimBeacon import BeaconReceiver, BeaconSource
+from SimGiro import GiroSensor
 
 class SimRobot(DiferentialChassisRobot):
     def __init__(self,port=1005,beaconId=0):
@@ -41,6 +41,9 @@ class SimRobot(DiferentialChassisRobot):
 
         self.beaconReceiver=BeaconReceiver()
         self.sensorServo.AttachChild(self.beaconReceiver)
+        
+        self.giroSensor=GiroSensor()
+        self.AttachChild(self.giroSensor)
         
         self.beaconSender=BeaconSource(beaconId)
         self.AttachChild(self.beaconSender)
@@ -74,6 +77,10 @@ class SimRobot(DiferentialChassisRobot):
         elif msgIn[0]=='Get_BeaconRead' :
             d,a=self.beaconReceiver.GetReading(int(msgIn[1]))
             msgOut=' '.join([str(d),str(a)])
+            
+        elif msgIn[0]=='Get_GiroRead' :
+            vrz,rzi=self.giroSensor.GetReading()
+            msgOut=' '.join([str(vrz),str(rzi)])
             
         else :
             print 'Unknown message:',msgIn

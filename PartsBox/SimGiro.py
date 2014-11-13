@@ -7,9 +7,9 @@
 
 from SimWorld import ActiveObject
 
-class Gyro(ActiveObject):
+class GiroSensor(ActiveObject):
     def __init__(self):
-        super(Compass, self).__init__()
+        super(GiroSensor, self).__init__()
         self.reading=0.
         self.last_rz=None   #last read orientation
         self.rzi=0.         #integral accumulator
@@ -20,8 +20,11 @@ class Gyro(ActiveObject):
         if not self.last_rz :
             self.last_rz=wrz
         self.rzi+=(wrz-self.last_rz)
-        self.vrz=(wrz-self.last_rz)/dt
-
+        if(dt>0):
+            self.vrz=(wrz-self.last_rz)/dt
+        else:
+            self.vrz=0
+            
         self.last_rz=wrz
 
         
