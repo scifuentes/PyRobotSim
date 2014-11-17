@@ -71,17 +71,18 @@ class WorldSimulation(threading.Thread) :
             else:
                 return True
 
-        def CollisionCheck_Walls(aobj,wobj):
-            ab=aobj.WorldBox()
-            wb=wobj.WorldBox()
-            if CheckBoxIntersection(ab,wb) :
-                wshape=sobj.WorldShape()
-                for wall in wobj.walls:
-                    for i in range(0,len(wshape)) :
-                        j=(i+1)%len(wshape)
-                        ix,iy=MathAux.LinesIntersection(wshape[i]+wshape[j],wall[0:4])
-                        if ix != []:
-                            return True
+        def CollisionCheck_Walls(sobj,wobj):
+            sbox=sobj.WorldBox()
+            wbox=wobj.WorldBox()
+            if sbox :
+                if CheckBoxIntersection(sbox,wbox) :
+                    wshape=sobj.WorldShape()
+                    for wall in wobj.walls:
+                        for i in range(0,len(wshape)) :
+                            j=(i+1)%len(wshape)
+                            ix,iy=MathAux.LinesIntersection(wshape[i]+wshape[j],wall[0:4])
+                            if ix != []:
+                                return True
             return False
             
         def CollisionCheck_Objects(obj1,obj2):
@@ -89,17 +90,18 @@ class WorldSimulation(threading.Thread) :
                 return False
             box1=obj1.WorldBox()
             box2=obj2.WorldBox()
-            if CheckBoxIntersection(box1,box2) :
-                wshape1=obj1.WorldShape()
-                wshape2=obj2.WorldShape()
-                for i1 in range(0,len(wshape1)):
-                    j1=(i1+1)%len(wshape1)
-                    for i2 in range(0,len(wshape2)):
-                        j2=(i2+1)%len(wshape2)
-                        
-                        ix,iy=MathAux.LinesIntersection(wshape1[i1]+wshape1[j1],wshape2[i2]+wshape2[j2])
-                        if ix != []:
-                            return True
+            if box1 and box2 :
+                if CheckBoxIntersection(box1,box2) :
+                    wshape1=obj1.WorldShape()
+                    wshape2=obj2.WorldShape()
+                    for i1 in range(0,len(wshape1)):
+                        j1=(i1+1)%len(wshape1)
+                        for i2 in range(0,len(wshape2)):
+                            j2=(i2+1)%len(wshape2)
+                            
+                            ix,iy=MathAux.LinesIntersection(wshape1[i1]+wshape1[j1],wshape2[i2]+wshape2[j2])
+                            if ix != []:
+                                return True
             return False
 
 
