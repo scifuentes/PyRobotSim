@@ -73,15 +73,13 @@ class DogLogic(threading.Thread):
     def StopMove(self):
         self.com.Send('Stop_Move')
         time.sleep(0)
+
         
     def CheckMoveCompleted(self):
         return (self.com.Request('Check_Move_Done')[0]=='True')
         
     def GetDistanceSensor(self):    
         return float(self.com.Request('Get_DistanceSensor.reading')[0])
-        
-    def GetDistanceSensor_ServoPos(self):    
-        return float(self.com.Request('Get_SensorServo_Pos')[0])
         
     def GetBeaconRead(self,id):
         [dstr,astr]=self.com.Request(' '.join(['Get_BeaconRead',str(id)]))
@@ -93,6 +91,9 @@ class DogLogic(threading.Thread):
         [vrz_str,irz_str]=self.com.Request('Get_GiroRead')
         return float(vrz_str),float(irz_str)
     
+    def ResetGiroSenor(self):
+        self.com.Send('Reset_GiroRead')
+        
     def SetSensorServoSpeed(self,v):
         self.com.Send((' ').join(['Set_SensorServo_Speed',str(v)]))        
         time.sleep(0)
@@ -101,6 +102,8 @@ class DogLogic(threading.Thread):
         self.com.Send((' ').join(['Move_SensorServo',str(ad),str(v)]))  
         time.sleep(0)
         
+    def GetSensorServoPos(self):    
+        return float(self.com.Request('Get_SensorServo_Pos'        
 if __name__ == "__main__":
     r=RobotLogic()
     r.main()
