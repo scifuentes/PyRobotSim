@@ -62,14 +62,35 @@ class SimRobot(DiferentialChassisRobot):
         if msgIn[0]=='Tic' :
             msgOut='Toc'
         
-        elif msgIn[0]=='Move_Forward' :
+        elif msgIn[0]=='Set_Forward_Speed' :        #used alone will set the speed for a continuous forward movement
             self.motorR.speed=float(msgIn[1])
             self.motorL.speed=float(msgIn[1])
         
-        elif msgIn[0]=='Turn' :
+        elif msgIn[0]=='Set_Turn_Speed' :
             self.motorR.speed=-float(msgIn[1])
             self.motorL.speed=float(msgIn[1])
             
+        elif msgIn[0]=='Move_Forward' :             #sets a controlled movement: after the requested amount(angle) is completed the movement stops
+            self.motorR.target=self.motorR.pos+float(msgIn[1])
+            self.motorL.target=self.motorL.pos+float(msgIn[1])
+            self.motorR.speed=float(msgIn[2])
+            self.motorL.speed=float(msgIn[2])
+            
+        elif msgIn[0]=='Move_Turn' :
+            self.motorR.target=self.motorR.pos-float(msgIn[1])
+            self.motorL.target=self.motorL.pos+float(msgIn[1])            
+            self.motorR.speed=-float(msgIn[2])
+            self.motorL.speed=float(msgIn[2])
+            
+        elif msgIn[0]=='Check_Move_Done' :
+            msgOut=str(self.motorR.target==None and self.motorL.target==None) 
+            
+        elif msgIn[0]=='Stop_Move' :
+            self.motorR.speed=0
+            self.motorL.speed=0
+            self.motorR.target==None
+            self.motorL.target==None            
+        
         elif msgIn[0]=='Set_SensorServo.target' :
             self.sensorServo.target=float(msgIn[1])
         

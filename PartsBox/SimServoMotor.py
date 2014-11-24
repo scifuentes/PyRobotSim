@@ -24,7 +24,7 @@ class ServoMotor(ActiveObject):
         if self.target != None :
             if ( (pos0>=self.target and self.pos<=self.target) 
                  or (pos0<=self.target and self.pos>=self.target) ):
-                self.pos=target
+                self.pos=self.target
                 self.speed=0.
                 self.target=None
         
