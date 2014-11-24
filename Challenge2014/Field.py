@@ -2,6 +2,7 @@
 
 from SimWorld import WallsObject
 from SimBeacon import BeaconSource
+from math import pi
 
 field=WallsObject()
 field.walls=[]
@@ -15,3 +16,4 @@ field.walls.append([ l,-w/2, 0,-w/2])
 fieldBeacon=BeaconSource(4)
 fieldBeacon.position.x=l
 fieldBeacon.position.y=0
+fieldBeacon.position.rz=pi

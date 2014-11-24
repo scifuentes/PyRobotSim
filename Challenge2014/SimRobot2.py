@@ -91,9 +91,16 @@ class SimRobot(DiferentialChassisRobot):
             self.motorR.target==None
             self.motorL.target==None            
         
-        elif msgIn[0]=='Set_SensorServo.target' :
+        elif msgIn[0]=='Set_SensorServo_Speed' :
+            self.sensorServo.speed=float(msgIn[1])  
+
+        elif msgIn[0]=='Move_SensorServo' :
             self.sensorServo.target=float(msgIn[1])
-        
+            self.sensorServo.speed=float(msgIn[2])    
+            
+        elif msgIn[0]=='Get_SensorServo_Pos' :
+            msgOut=str(self.sensorServo.pos)      
+            
         elif msgIn[0]=='Get_DistanceSensor.reading' :
             msgOut=str(self.distanceSensor.reading) 
 
@@ -105,6 +112,9 @@ class SimRobot(DiferentialChassisRobot):
             vrz,rzi=self.giroSensor.GetReading()
             msgOut=' '.join([str(vrz),str(rzi)])
             
+        elif msgIn[0]=='Reset_GiroRead' :
+            self.giroSensor.Reset()
+           
         else :
             print 'Unknown message: ',msgIn
             msgOut='NACK'

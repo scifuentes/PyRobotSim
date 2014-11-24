@@ -10,10 +10,7 @@ import os
 import sys
 import time
 import threading
-import math
-import random
-from math import radians, degrees, pi, cos, sin
-from MathAux import AngleNorm, AngleDif
+from math import radians, degrees, pi
 
 currDir=os.path.dirname(os.path.realpath(__file__))
 parentDir=os.path.dirname(currDir)
@@ -22,9 +19,7 @@ sys.path.insert(1,parentDir+r'\PartsBox')
 from MathAux import AngleDif
 import SimpleUDP
 
-#To be used with SimRobot2 or compatible 
-
-class SheepLogic(threading.Thread):
+class DogLogic(threading.Thread):
     def __init__(self,port=1005):
         threading.Thread.__init__(self)
         self.com=SimpleUDP.Client('127.0.0.1',port)
@@ -33,17 +28,13 @@ class SheepLogic(threading.Thread):
         self.main()
     
     def main(self):
-        self.ResetGiroSenor()
-        
+    
         while True:
             dist=self.GetDistanceSensor()
             fieldBeacon_dist,fieldBeacon_angle=self.GetBeaconRead(4)
-            dog1_dist,sheep_angle=self.GetBeaconRead(1)
-            dog2_dist,sheep_angle=self.GetBeaconRead(2)
-        
-        
-            self.LookToBeacon(4)
+            sheep_dist,sheep_angle=self.GetBeaconRead(3)
             
+            self.LookToBeacon(4)
 
     
     def LookToBeacon(self,beacon_id):
@@ -57,11 +48,7 @@ class SheepLogic(threading.Thread):
             self.SetSensorServoSpeed(ang_err*3)
         else :
             self.SetSensorServoSpeed(0.1)
-        
-        if abs(beacon_angle)<pi/180.:
-            print self.GetSensorServoPos()
-               
-
+    
     # ====== HW commands =======
     def SetForwardSpeed(self,v):
         self.com.Send((' ').join(['Set_Forward_Speed',str(v)]))
@@ -86,13 +73,15 @@ class SheepLogic(threading.Thread):
     def StopMove(self):
         self.com.Send('Stop_Move')
         time.sleep(0)
-
         
     def CheckMoveCompleted(self):
         return (self.com.Request('Check_Move_Done')[0]=='True')
         
     def GetDistanceSensor(self):    
         return float(self.com.Request('Get_DistanceSensor.reading')[0])
+        
+    def GetDistanceSensor_ServoPos(self):    
+        return float(self.com.Request('Get_SensorServo_Pos')[0])
         
     def GetBeaconRead(self,id):
         [dstr,astr]=self.com.Request(' '.join(['Get_BeaconRead',str(id)]))
@@ -104,9 +93,6 @@ class SheepLogic(threading.Thread):
         [vrz_str,irz_str]=self.com.Request('Get_GiroRead')
         return float(vrz_str),float(irz_str)
     
-    def ResetGiroSenor(self):
-        self.com.Send('Reset_GiroRead')
-        
     def SetSensorServoSpeed(self,v):
         self.com.Send((' ').join(['Set_SensorServo_Speed',str(v)]))        
         time.sleep(0)
@@ -115,9 +101,6 @@ class SheepLogic(threading.Thread):
         self.com.Send((' ').join(['Move_SensorServo',str(ad),str(v)]))  
         time.sleep(0)
         
-    def GetSensorServoPos(self):    
-        return float(self.com.Request('Get_SensorServo_Pos')[0])        
-    
 if __name__ == "__main__":
     r=RobotLogic()
     r.main()

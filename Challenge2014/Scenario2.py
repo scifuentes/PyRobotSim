@@ -9,10 +9,9 @@
 
 from SimWorld import WorldDescription
 import Field
-import SimRobot
 import SimRobot2
 import SheepLogic2
-import DogLogic
+import DogLogic2
 import math
 
 
@@ -34,22 +33,22 @@ world.AddSimObject(sheep)
 controllers.append(sheepControl)
 
 
-dog1=SimRobot.SimRobot(1006,1)
+dog1=SimRobot2.SimRobot(1006,1)
 dog1.name='dog1'
 dog1.position.x=50
 dog1.position.y=Field.w/2-30
 dog1.position.rz=0
 dog1.beaconReceiver.name='dog1_beacon'
-dog1Control=DogLogic.DogLogic(1006)
+dog1Control=DogLogic2.DogLogic(1006)
 world.AddSimObject(dog1)
-#controllers.append(dog1Control)
+controllers.append(dog1Control)
 
 
-dog2=SimRobot.SimRobot(1007,2)
+dog2=SimRobot2.SimRobot(1007,2)
 dog2.name='dog2'
 dog2.position.x=50
 dog2.position.y=-Field.w/2+30
 dog1.position.rz=-.6
-dog2Control=DogLogic.DogLogic(1007)
+dog2Control=DogLogic2.DogLogic(1007)
 world.AddSimObject(dog2)
-#controllers.append(dog2Control)
+controllers.append(dog2Control)
