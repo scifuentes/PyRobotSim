@@ -13,14 +13,14 @@ class BeaconSource(WorldObject):
     def __init__(self,id=0):
         super(BeaconSource, self).__init__()
         self.id=id
-        self.apperture=pi/2.
+        self.apperture=pi
 
 class BeaconReceiver(ActiveObject):
     def __init__(self):
         super(BeaconReceiver, self).__init__()
         self.sensed=[]
-        self.max_range=300
-        self.apperture=pi/2.
+        self.max_range=200
+        self.apperture=pi
         
     def UpdateSensors(self,t,dt,world):
         sL=[]
