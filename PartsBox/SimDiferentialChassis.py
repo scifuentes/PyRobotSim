@@ -9,9 +9,8 @@ from SimWorld import ActiveObject
 from math import *
 import MathAux
 from OpenGL.GL import *
+from SimServoMotor import ServoMotor
 
-class SimpleMotor:
-    pass
 
 class DiferentialChassisRobot(ActiveObject):
     
@@ -22,21 +21,22 @@ class DiferentialChassisRobot(ActiveObject):
         self.wheel_diameter=5.
         self.wheel_separation=10.
         
-        self.motorR=SimpleMotor()
-        self.motorL=SimpleMotor()
-        self.motorR.speed=0.
-        self.motorR.pos=0.
-        self.motorL.speed=0.
-        self.motorL.pos=0.
+        self.motorR=ServoMotor()
+        self.motorL=ServoMotor()
         
         
     def UpdatePositions(self,t,dt):
-            
-        self.motorR.pos+=self.motorR.speed*dt
-        self.motorL.pos+=self.motorL.speed*dt
+        motorR_pos0=self.motorR.pos
+        motorL_pos0=self.motorL.pos
         
-        l0=self.motorL.speed*self.wheel_diameter/2.*dt
-        l1=self.motorR.speed*self.wheel_diameter/2.*dt
+        self.motorR.UpdatePositions(t,dt)
+        self.motorL.UpdatePositions(t,dt)
+        
+        motorR_delta=self.motorR.pos-motorR_pos0
+        motorL_delta=self.motorL.pos-motorL_pos0
+        
+        l0=motorL_delta*self.wheel_diameter/2
+        l1=motorR_delta*self.wheel_diameter/2
         
         if l0==l1:    
             #-- straight movement

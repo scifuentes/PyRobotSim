@@ -37,7 +37,7 @@ class BeaconReceiver(ActiveObject):
                         sL.append([obj.id, distance, angle])
                 else:
                     sL.append([obj.id, self.max_range, 0])
-                print sL[-1],obj.id,',',dx,dy,distance,',',srz,brz,angle,',',abs(AngleDif(angle+pi,brz))
+                #print sL[-1],obj.id,',',dx,dy,distance,',',srz,brz,angle,',',abs(AngleDif(angle+pi,brz))
 
         self.sensed=sL
     
