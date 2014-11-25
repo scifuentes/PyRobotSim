@@ -103,7 +103,7 @@ class DogLogic(threading.Thread):
         time.sleep(0)
         
     def GetSensorServoPos(self):    
-        return float(self.com.Request('Get_SensorServo_Pos'        
+        return float(self.com.Request('Get_SensorServo_Pos'))        
 if __name__ == "__main__":
     r=RobotLogic()
     r.main()
