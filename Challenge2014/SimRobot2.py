@@ -6,8 +6,10 @@
 #============================================================================================
 # by Santiago Cifuentes
 
+
 import math
 import SimpleUDP
+import time
 
 from SimDiferentialChassis import DiferentialChassisRobot
 from SimRangeSensor import DistanceSensor
@@ -55,6 +57,7 @@ class SimRobot(DiferentialChassisRobot):
         
     def AttendMessage(self,msgIn,addr):
         #transforms remote commands into simHW actions
+        #print '@'+self.name,'Received:',msgIn
         
         msgOut=''
         msgIn=msgIn.split()
@@ -122,3 +125,62 @@ class SimRobot(DiferentialChassisRobot):
         return msgOut
 
 #==============================================================================
+
+class SimRobotClient:
+    def __init__(self,ip,port):
+        self.com=SimpleUDP.Client(ip,port)
+
+    def SetForwardSpeed(self,v):
+        self.com.Send((' ').join(['Set_Forward_Speed',str(v)]))
+        time.sleep(0)
+        
+    def SetTurnSpeed(self,v):
+        self.com.Send((' ').join(['Set_Turn_Speed',str(v)]))
+        time.sleep(0)
+        
+    def SetForwardMove(self,ad,v=10):
+        if ad<0 and v>0:
+            v*=-1
+        self.com.Send((' ').join(['Move_Forward',str(ad),str(v)]))
+        time.sleep(0)
+        
+    def SetTurnMove(self,ad,v=10):
+        if ad<0 and v>0:
+            v*=-1
+        self.com.Send((' ').join(['Move_Turn',str(ad),str(v)]))
+        time.sleep(0) 
+        
+    def StopMove(self):
+        self.com.Send('Stop_Move')
+        time.sleep(0)
+
+        
+    def CheckMoveCompleted(self):
+        return (self.com.Request('Check_Move_Done')[0]=='True')
+        
+    def GetDistanceSensor(self):    
+        return float(self.com.Request('Get_DistanceSensor.reading')[0])
+        
+    def GetBeaconRead(self,id):
+        [dstr,astr]=self.com.Request(' '.join(['Get_BeaconRead',str(id)]))
+        distance=float(dstr)
+        angle=float(astr)
+        return distance,angle
+
+    def GetGiroSensor(self):    
+        [vrz_str,irz_str]=self.com.Request('Get_GiroRead')
+        return float(vrz_str),float(irz_str)
+    
+    def ResetGiroSenor(self):
+        self.com.Send('Reset_GiroRead')
+        
+    def SetSensorServoSpeed(self,v):
+        self.com.Send((' ').join(['Set_SensorServo_Speed',str(v)]))        
+        time.sleep(0)
+    
+    def MoveSensorServo(self,ad,v):
+        self.com.Send((' ').join(['Move_SensorServo',str(ad),str(v)]))  
+        time.sleep(0)
+        
+    def GetSensorServoPos(self):    
+        return float(self.com.Request('Get_SensorServo_Pos')[0])        
