@@ -40,6 +40,10 @@ class SimRobot(DiferentialChassisRobot):
         self.distanceSensor=DistanceSensor()
         self.distanceSensor.range=80.
         self.sensorServo.AttachChild(self.distanceSensor)
+        
+        self.distanceSensorF=DistanceSensor()
+        self.distanceSensorF.range=250.
+        self.AttachChild(self.distanceSensorF)
 
         self.beaconReceiver=BeaconReceiver()
         self.sensorServo.AttachChild(self.beaconReceiver)
@@ -106,6 +110,9 @@ class SimRobot(DiferentialChassisRobot):
             
         elif msgIn[0]=='Get_DistanceSensor.reading' :
             msgOut=str(self.distanceSensor.reading) 
+            
+        elif msgIn[0]=='Get_DistanceSensorF.reading' :
+            msgOut=str(self.distanceSensorF.reading) 
 
         elif msgIn[0]=='Get_BeaconRead' :
             d,a=self.beaconReceiver.GetReading(int(msgIn[1]))
@@ -160,6 +167,9 @@ class SimRobotClient:
         
     def GetDistanceSensor(self):    
         return float(self.com.Request('Get_DistanceSensor.reading')[0])
+        
+    def GetDistanceSensorF(self):    
+        return float(self.com.Request('Get_DistanceSensorF.reading')[0])
         
     def GetBeaconRead(self,id):
         [dstr,astr]=self.com.Request(' '.join(['Get_BeaconRead',str(id)]))
