@@ -13,14 +13,14 @@ class BeaconSource(WorldObject):
     def __init__(self,id=0):
         super(BeaconSource, self).__init__()
         self.id=id
-        self.apperture=pi
+        self.aperture=pi
 
 class BeaconReceiver(ActiveObject):
     def __init__(self):
         super(BeaconReceiver, self).__init__()
         self.sensed=[]
-        self.max_range=200
-        self.apperture=pi
+        self.max_range=100
+        self.aperture=pi
         
     def UpdateSensors(self,t,dt,world):
         sL=[]
@@ -32,11 +32,11 @@ class BeaconReceiver(ActiveObject):
                 dy=bpy-spy
                 distance=sqrt(dx**2+dy**2)
                 angle=AngleDif(0,atan2(dy,dx)-srz)
-                if (distance<=self.max_range and abs(angle)<=self.apperture/2.    #within sensor distance and aperture
-                   and abs(AngleDif(angle+pi,brz)) <= obj.apperture/2. ):         #within beacon aperture
+                if (distance<=self.max_range and abs(angle)<=self.aperture/2.    #within sensor distance and aperture
+                   and abs(AngleDif(angle+pi,brz)) <= obj.aperture/2. ):         #within beacon aperture
                         sL.append([obj.id, distance, angle])
-                else:
-                    sL.append([obj.id, self.max_range, 0])
+                #else:
+                #    sL.append([obj.id, -1, 0])
                 #print sL[-1],obj.id,',',dx,dy,distance,',',srz,brz,angle,',',abs(AngleDif(angle+pi,brz))
 
         self.sensed=sL

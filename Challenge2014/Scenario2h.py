@@ -25,8 +25,8 @@ world.AddSimObject(Field.fieldBeacon)
 
 sheep=SimRobot2.SimRobot(1005,3)
 sheep.name='sheep'
-sheep.position.x=Field.l-50
-sheep.position.y=Field.w/2-30
+sheep.position.x=Field.l-40
+sheep.position.y=40 #Field.w/2-30
 sheep.position.rz=math.pi+1
 sheepControl=SheepLogic2.SheepLogic(1005)
 world.AddSimObject(sheep)

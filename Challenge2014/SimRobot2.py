@@ -46,6 +46,8 @@ class SimRobot(DiferentialChassisRobot):
         self.AttachChild(self.distanceSensorF)
 
         self.beaconReceiver=BeaconReceiver()
+        self.beaconReceiver.aperture=240./180.*math.pi
+        self.beaconReceiver.max_range=400
         self.sensorServo.AttachChild(self.beaconReceiver)
         
         self.giroSensor=GiroSensor()
@@ -99,6 +101,7 @@ class SimRobot(DiferentialChassisRobot):
             self.motorL.target==None            
         
         elif msgIn[0]=='Set_SensorServo_Speed' :
+        
             self.sensorServo.speed=float(msgIn[1])  
 
         elif msgIn[0]=='Move_SensorServo' :
@@ -116,7 +119,9 @@ class SimRobot(DiferentialChassisRobot):
 
         elif msgIn[0]=='Get_BeaconRead' :
             d,a=self.beaconReceiver.GetReading(int(msgIn[1]))
+            if d==self.distanceSensor.range: d=-1
             msgOut=' '.join([str(d),str(a)])
+            print 'Beacon',msgIn[1],d,a*180/math.pi
             
         elif msgIn[0]=='Get_GiroRead' :
             vrz,rzi=self.giroSensor.GetReading()

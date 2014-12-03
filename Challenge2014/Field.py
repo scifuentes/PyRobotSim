@@ -17,3 +17,4 @@ fieldBeacon=BeaconSource(4)
 fieldBeacon.position.x=l
 fieldBeacon.position.y=0
 fieldBeacon.position.rz=pi
+fieldBeacon.aperture=240./180.*pi;
