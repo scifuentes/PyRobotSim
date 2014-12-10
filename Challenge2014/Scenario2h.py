@@ -35,7 +35,7 @@ world.AddSimObject(sheep)
 
 dog1=SimRobot2.SimRobot(1006,1)
 dog1.name='dog1'
-dog1.position.x=50
+dog1.position.x=150
 dog1.position.y=Field.w/2-30
 dog1.position.rz=0
 dog1.beaconReceiver.name='dog1_beacon'

@@ -6,6 +6,7 @@
 #by Santiago Cifuentes
 
 from SimWorld import ActiveObject
+from math import copysign
 
 class ServoMotor(ActiveObject):
     def __init__(self,axis=[1.,0.,0.],zero=[0.,0.,0.]):
@@ -19,9 +20,12 @@ class ServoMotor(ActiveObject):
         
     def UpdatePositions(self,t,dt):
         pos0=self.pos
-        self.pos+=self.speed*dt;
-        
-        if self.target != None :
+
+        if self.target == None :
+            self.pos+=self.speed*dt;
+            
+        else :
+            self.pos+=copysign(self.speed,pos0-self.target)*dt;
             if ( (pos0>=self.target and self.pos<=self.target) 
                  or (pos0<=self.target and self.pos>=self.target) ):
                 self.pos=self.target
